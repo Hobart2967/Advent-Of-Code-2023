@@ -2,6 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
+  /**
+   *
+   * @returns {string}
+   */
   getInput: function() {
     const dir = path.resolve(path.dirname(process.argv[1]));
     const name = process.argv[2];
