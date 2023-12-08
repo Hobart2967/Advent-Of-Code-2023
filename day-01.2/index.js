@@ -31,6 +31,18 @@ function replaceLiterals(line) {
     nine: 9
   };
 
-  return line.replace(/one|two|three|four|five|six|seven|eight|nine/g, id => replaceBy[id])
+  let targetString = '';
+  for (let i = 0; i <= line.length; i++) {
+    if (/\d/g.test(line[i])) {
+      targetString += line[i];
+      continue;
+    }
+
+    const match = /^(one|two|three|four|five|six|seven|eight|nine)/.exec(line.substring(i));
+    if (match && match[1]) {
+      targetString += `${replaceBy[match[1]]}`;
+    }
+  }
+  return targetString;
 }
 main();
