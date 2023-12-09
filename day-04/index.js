@@ -16,7 +16,38 @@ async function main() {
         : Math.pow(2, card.owningWinCount - 1)
     }));
 
-  console.log(JSON.stringify(prep));
+  let winCount = Infinity;
+  let cardIndex = 0;
+
+  const cardsQueued = Array
+    .from(new Array(prep.length))
+    .reduce((prev, cur, index) => ({
+      ...prev,
+      [index]: 1
+    }), {});
+
+  let totalScratchCards = prep.length;
+
+  while (winCount > 0 || cardIndex < prep.length) {
+    const card = prep[cardIndex];
+    winCount = card.owningWinCount;
+
+    if (winCount > 0) {
+      console.log(`Card ${cardIndex + 1} has won ${winCount} scratch cards. Cards Queued for ${cardIndex + 1}: ${cardsQueued[cardIndex]}`);
+
+      for (let instanceCount = 0; instanceCount < cardsQueued[cardIndex]; instanceCount++) {
+        for (let copyCardIndex = 1; copyCardIndex <= card.owningWinCount; copyCardIndex++) {
+          cardsQueued[cardIndex + copyCardIndex]++;
+          totalScratchCards++;
+        }
+      }
+    }
+
+    cardIndex++;
+  }
+
+  console.log('Total Scratchcards: ' + totalScratchCards);
+
   const result = prep
     .map(x => x.score)
     .reduce((a, b) => a + b, 0);
